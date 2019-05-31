@@ -48,57 +48,99 @@ Bernhard Haslhofer \inst{1}}
 
 \maketitle
 
-\begin{frame}[fragile]{Motivations} 
-    \begin{enumerate}
-        \item Lack of research in:
-        \begin{itemize}
-            \item mining pools' relationships
-            \item pool members' behaviors
-            \item hash laundering~\cite{Narayanan_book}
-            \item block reward distribution
-        \end{itemize}
-        \item The current mining power distribution is subject to malicious attacks (e.g., selfish~\cite{EyalS13} and stubborn~\cite{Nayak} mining)  
-        \item Few entities control the mining industry and represent a centralization of power
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}[fragile]{Contributions} 
+\begin{frame}[fragile]{Introduction}
+    Why do we care about miners?
     \begin{itemize}
-        \item Block attribution: improve current methods and publish code~\cite{deep_dive_repo}
-        \item Mining centralization: analyze the mining power distribution and centralization indices
-        \item Payout patterns: how mining pools collect and share block rewards
-        \item Cross-pool and (un)known miners: investigate pools members' behaviors and relationships.
+        \item Miners decide which transactions to include in a block
+        \item Miners decide which blocks to include in the chain
+        \item Miners are rewarded with new coins and transaction fees
+        \item Miners secure the network (Proof-of-Work algorithm)
+        \item Miners can attack the network (e.g., double-spend)
     \end{itemize}
 \end{frame}
 
-% \begin{frame}[fragile]{Background: Mining Race}
-% % ~12 pools
-% % pool manager creates and sends the next block template to pool members
-% % one pool member finds the valid nonce for the next block
-% % the pool manager broadcasts the block to the network
-% % the pool manager pays out to pool members
-% \end{frame}
+\begin{frame}[fragile]{Introduction}
+    What about Mining Pools?
+    \begin{itemize}
+        \item Solo mining is not profitable anymore
+        \item Miners join pools for steadier revenues
+        \item Pools compete to create blocks and claim the rewards
+        \item Pool managers coordinate work and rewards among members
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Research Questions} 
+    \begin{enumerate}
+        \item How did the mining distribution evolve over time? How can we attribute blocks to mining pools? 
+        \item How do mining pools distribute rewards? How can we detect payments to pool members?
+        \item How decentralized is a mining pool? Who are the pool members? What's their behavior?
+    \end{enumerate}
+\end{frame}
 
 \section{Background} 
 \begin{frame}[fragile]{Background | Coinbase Flow}
     \begin{figure}
-        \includegraphics[width=.8\textwidth]{images/flow_BTCcom_example1.png}
-        \caption{Example of a coinbase flow. In gray: reward addresses, in red: addresses performing payout transactions, in blue: pool members. Rounded squares are coinbases of blocks mined by the pool.}
-        \label{fig:btccom_flow}
+        \includegraphics[width=.8\textwidth]{images/flow_example.png}
+        \\Example of a coinbase flow
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Background | Coinbase Flow}
+    \begin{figure}
+        \includegraphics[width=.8\textwidth]{images/1rq.png}
+        \\Example of a coinbase flow
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Background | Coinbase Flow}
+    \begin{figure}
+        \includegraphics[width=.8\textwidth]{images/2rq.png}
+        \\Example of a coinbase flow
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Background | Coinbase Flow}
+    \begin{figure}
+        \includegraphics[width=.8\textwidth]{images/3rq.png}
+        \\Example of a coinbase flow
     \end{figure}
 \end{frame}
 
 \begin{frame}[fragile]{Background | Multiple-Input Clustering Heuristic}
     \begin{figure}
         \centering
-        \includegraphics[width=0.9\textwidth]{images/clustering.png}
-        \caption{\textbf{Multiple-input clustering heuristic}. In Transactions with multiple inputs, the input addresses can be linked to one entity, represented by a cluster, owning their private keys. When an address, $A3$ in this case, is reused in another multiple-input transaction, we can group these two sets of addresses into one single cluster.}
-        \label{fig:clustering}
+        \includegraphics[width=0.9\textwidth]{images/clustering1.png}
+        \\Multiple-input clustering heuristic
     \end{figure}
 \end{frame}
 
-% \begin{frame}[fragile]{Background: Related Work}
-% \end{frame}
+\begin{frame}[fragile]{Background | Multiple-Input Clustering Heuristic}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{images/clustering2.png}
+        \\Multiple-input clustering heuristic
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Background | Multiple-Input Clustering Heuristic}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{images/clustering3.png}
+        \\Multiple-input clustering heuristic
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Background | Multiple-Input Clustering Heuristic}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{images/clustering3.png}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \def\svgwidth{\columnwidth}
+        \input{images/graphsense.pdf_tex}
+    \end{figure}
+\end{frame}
 
 \section{Block Attribution} 
 \begin{frame}[fragile]{Block Attribution | Data Sources}
@@ -106,7 +148,7 @@ Bernhard Haslhofer \inst{1}}
         \item Blocktrail API (till block 514239, March 2018)
         \item Blockchain.info Github repository
         \item BTC.com Github repository
-        \item Walletexplorer.com's tags with multiple-input clustering heuristic (Graphsense)
+        \item Walletexplorer.com's tags with multiple-input clustering heuristic (GraphSense)
         \item Coinbase markers manually retrieved
     \end{itemize}
 \end{frame}
@@ -120,7 +162,7 @@ Bernhard Haslhofer \inst{1}}
     \end{figure}
 \end{frame}
 
-\begin{frame}[fragile]{Block Attribution | Results}
+\begin{frame}[fragile]{Block Attribution | Results: Conflicts}
     \setlength{\tabcolsep}{2pt}
     \begin{table}
         \caption{684 attribution conflicts out of 556400 blocks (0.0012\%). From 500,000 to 556,400, we attributed 96.5\% of the blocks (blockchain.info 92\%, $\sim$ 32,100 BTC difference)}\label{tbl:conflicts}
@@ -143,7 +185,7 @@ Bernhard Haslhofer \inst{1}}
     \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Block Attribution | Results}
+\begin{frame}[fragile]{Block Attribution | Results: Mining Shares}
     \vspace*{-0.77cm}
     \begin{figure}
         \hspace*{-1.7cm}
@@ -153,32 +195,16 @@ Bernhard Haslhofer \inst{1}}
     \end{figure}
 \end{frame}
 
-\section{Payout Patters} 
-\begin{frame}[fragile]{Payout Patters | Data Sources}
+\section{Payout Patterns} 
+\begin{frame}[fragile]{Payout Patterns | Data Sources}
     \begin{itemize}
         \item Output of the block attribution procedure to select BTC.com, AntPool and ViaBTC blocks
         \item Blockchain.info API to retrieve coinbase flows
-        \item Graphsense to detect exchanges
+        \item GraphSense to detect exchanges
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Payout Patters | Methodology}
-    \begin{algorithm}[H]
-        \caption{Looking for payout patterns in BTC.com, AntPool and ViaBTC.}\label{algo:blocks_addresses}
-        \begin{algorithmic}[1]
-            \For{each pool}
-                \For{each mined block}
-                    \State get coinbase flow of block
-                    \State compute number of addresses at each step of the coinbase flow
-                    \State save results
-                \EndFor
-                \State plot data and look for common patterns among flows
-            \EndFor
-        \end{algorithmic}
-    \end{algorithm}
-\end{frame}
-
-\begin{frame}[fragile]{Payout Patters | Methodology: BTC.com}
+\begin{frame}[fragile]{Payout Patterns | Methodology: BTC.com}
     \begin{figure}
         \includegraphics[width=.8\textwidth]{images/flow_BTCcom_example1.png}
         \caption{BTC.com payout pattern observed between block 510,000 and 514,032. In gray: reward addresses, in red: addresses performing payout transactions, in blue: pool members, in green: change addresses. Rounded squares are coinbases of blocks mined by the pool.}
@@ -186,7 +212,7 @@ Bernhard Haslhofer \inst{1}}
     \end{figure}
 \end{frame}
 
-\begin{frame}[fragile]{Payout Patters | Methodology: AntPool}
+\begin{frame}[fragile]{Payout Patterns | Methodology: AntPool}
     \begin{figure}
         \includegraphics[width=.8\textwidth]{images/flow_AntPool_example1.png}
         \caption{AntPool payout pattern observed between block 510,000 and 514,032. In gray: reward addresses, in red: addresses performing payout transactions, in blue: pool members, in green: change addresses. Rounded squares are coinbases of blocks mined by the pool.}
@@ -194,7 +220,7 @@ Bernhard Haslhofer \inst{1}}
     \end{figure}
 \end{frame}
 
-\begin{frame}[fragile]{Payout Patters | Methodology: ViaBTC}
+\begin{frame}[fragile]{Payout Patterns | Methodology: ViaBTC}
     \begin{figure}
         \includegraphics[width=.5\textwidth]{images/flow_ViaBTC_example2.png}
         \caption{ViaBTC payout pattern observed between block 510,000 and 514,032. In gray: reward addresses, in red: addresses performing payout transactions, in blue: pool members, in green: change addresses. Rounded squares are coinbases of blocks mined by the pool.}
@@ -202,7 +228,7 @@ Bernhard Haslhofer \inst{1}}
     \end{figure}
 \end{frame}
 
-\begin{frame}[fragile]{Payout Patters | Results}
+\begin{frame}[fragile]{Payout Patterns | Results}
     \setlength{\tabcolsep}{2pt}
     \begin{table}
         \centering
@@ -235,11 +261,11 @@ Bernhard Haslhofer \inst{1}}
     \begin{itemize}
         \item Output of the block attribution procedure
         \item Output of the payout patterns
-        \item Walletexplorer.com + multiple-input clustering heuristic (Graphsense)
+        \item Walletexplorer.com + multiple-input clustering heuristic (GraphSense)
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Pools Members | Results : Cross-Pool Mining}
+\begin{frame}[fragile]{Pools Members | Results: Cross-Pool Mining}
     \setlength{\tabcolsep}{3pt}
     \begin{table}
         \caption{Cross-pool mining between block 510,000 and 514,032 ($\sim$ 4 weeks), including how much BTC from each pool has been received by those common addresses.} \label{table:crosspool_addresses}
@@ -255,6 +281,32 @@ Bernhard Haslhofer \inst{1}}
     \end{table}
 \end{frame}
 
+\begin{frame}[fragile]{Pools Members | Results: Main Entities}
+    \setlength{\tabcolsep}{2pt}
+    \begin{table}
+        \caption{Cross-pool mining at a cluster level in the time period between block 510,000 and 514,032 ($\sim$ 4 weeks). W: wallet provider, E: exchange service, P: known mining pool, M: unknown mining entity.}\label{table:crosspool_entities}
+        \scalebox{0.65}{
+            \begin{tabular}{@{}llrrrrrrrrrr@{}}
+            \toprule
+                          &  & \multicolumn{3}{c}{BTC.com}   & \multicolumn{3}{c}{AntPool}   & \multicolumn{3}{c}{ViaBTC}    &  \\ \cmidrule(lr){3-5} \cmidrule(lr){6-8} \cmidrule(lr){9-11}
+            Entity/Actor             & Service        & BTC     & \%BTC & \#Addr. & BTC     & \%BTC & \#Addr. & BTC     & \%BTC & \#Addr. & Total BTC \\ \midrule
+            Unknown             & ?       & 8930.39 & 74.07 & 13286       & 1682.25 & 72.09 & 8888        & 2877.02 & 67.17 & 4845        & 13489.67  \\ 
+            Bixin               & W+E+P   & 1663.75 & 13.80 & 1061        & 241.28  & 10.34 & 546         & 795.36  & 18.57 & 476         & 2700.39   \\ 
+            Huobi.com         & E       & 808.64  & 6.71  & 964         & 142.04  & 6.09  & 759         & 225.50  & 5.27  & 322         & 1176.19   \\ 
+            % Old mining clusters & M       & 426.72  & 3.54  & 3793        & 141.84  & 6.08  & 3081        & 300.62  & 7.02  & 1033        & 869.19    \\ 
+            Bittrex.com         & E       & 83.71   & 0.69  & 348         & 29.56   & 1.27  & 251         & 43.36   & 1.01  & 177         & 156.63    \\ 
+            Xapo.com            & W       & 26.96   & 0.22  & 94          & 70.75   & 3.03  & 64          & 5.79    & 0.14  & 33          & 103.50    \\ 
+            Poloniex.com        & E       & 42.65   & 0.35  & 381         & 11.52   & 0.49  & 268         & 19.97   & 0.47  & 139         & 74.15     \\ 
+            Luno.com            & W+E     & 36.59   & 0.30  & 258         & 4.06    & 0.17  & 104         & 4.39    & 0.10  & 60          & 45.04     \\ 
+            Bitstamp.net        & E       & 8.94    & 0.07  & 57          & 3.55    & 0.15  & 38          & 3.91    & 0.09  & 22          & 16.39     \\ 
+            Cryptonator.com     & W+E     & 5.75    & 0.05  & 80          & 0.70    & 0.03  & 41          & 2.70    & 0.06  & 33          & 9.15      \\ 
+            BitoEX.com          & W       & 5.09    & 0.04  & 23          & 1.12    & 0.05  & 35          & 2.19    & 0.05  & 4           & 8.39      \\ 
+            CoinHako.com        & W+E     & 3.59    & 0.03  & 4           & 0.29    & 0.01  & 3           & 0.24    & 0.01  & 2           & 4.12      \\ 
+            Bitcoin.de          & E       & 1.86    & 0.02  & 26          & 0.76    & 0.03  & 13          & 0.58    & 0.01  & 7           & 3.19      \\ \bottomrule
+            \end{tabular}
+        }
+    \end{table} 
+\end{frame}
 
 \begin{frame}[fragile]{Pools Members | Results: Pool Centralization}
     \begin{figure}
@@ -263,6 +315,42 @@ Bernhard Haslhofer \inst{1}}
     \end{figure}
 \end{frame}
 
+\section{Future work} 
+\begin{frame}[fragile]{Future work}
+    \begin{itemize}
+        \item Further research on unknown entities (entity classification) 
+        % automatic characterization of entities
+        \item Improve heuristics to get more payout patterns
+        \item Extend analysis to other pools
+        \item IP-network traffic measurement
+    \end{itemize}
+\end{frame}
+
+\section{Conclusion} 
+\begin{frame}[fragile]{Conclusion}
+    \begin{itemize}
+        \item 3 pools can easily reach 50\% of the hash rate
+        \item It is possible to find pool members because pools follow payout patterns
+        \item High hash-rate concentration within major pools
+        \item Cross-pool mining occurs
+        \item Unknown mining prevails
+    \end{itemize}
+\end{frame}
+
+
+% \begin{frame}[allowframebreaks]{References}
+%   \bibliography{demo}
+%   \bibliographystyle{abbrv}
+% \end{frame}
+
+\section{Appendix}
+\begin{frame}[fragile]{Block Attribution | Results}
+    \begin{figure}
+        \centering
+        \includegraphics[width=.6\textwidth]{images/mining_distribution_157.pdf}
+        \caption{Concentration indeces and mining shares.} \label{fig:mining_distribution}
+    \end{figure}
+\end{frame}
 
 \begin{frame}[fragile]{Pools Members | Results: Cross-Pool Mining}
     \begin{figure}
@@ -297,71 +385,23 @@ Bernhard Haslhofer \inst{1}}
     \end{table}
 \end{frame}
 
-
-\begin{frame}[fragile]{Pools Members | Results: Main Entities}
-    \setlength{\tabcolsep}{2pt}
-    \begin{table}
-        \caption{Cross-pool mining at a cluster level in the time period between block 510,000 and 514,032 ($\sim$ 4 weeks). W: wallet provider, E: exchange service, P: known mining pool, M: unknown mining entity.}\label{table:crosspool_entities}
-        \scalebox{0.65}{
-            \begin{tabular}{@{}llrrrrrrrrrr@{}}
-            \toprule
-                          &  & \multicolumn{3}{c}{BTC.com}   & \multicolumn{3}{c}{AntPool}   & \multicolumn{3}{c}{ViaBTC}    &  \\ \cmidrule(lr){3-5} \cmidrule(lr){6-8} \cmidrule(lr){9-11}
-            Entity/Actor             & Service        & BTC     & \%BTC & \#Addr. & BTC     & \%BTC & \#Addr. & BTC     & \%BTC & \#Addr. & Total BTC \\ \midrule
-            Unknown             & ?       & 8930.39 & 74.07 & 13286       & 1682.25 & 72.09 & 8888        & 2877.02 & 67.17 & 4845        & 13489.67  \\ 
-            Bixin               & W+E+P   & 1663.75 & 13.80 & 1061        & 241.28  & 10.34 & 546         & 795.36  & 18.57 & 476         & 2700.39   \\ 
-            Huobi.com         & E       & 808.64  & 6.71  & 964         & 142.04  & 6.09  & 759         & 225.50  & 5.27  & 322         & 1176.19   \\ 
-            % Old mining clusters & M       & 426.72  & 3.54  & 3793        & 141.84  & 6.08  & 3081        & 300.62  & 7.02  & 1033        & 869.19    \\ 
-            Bittrex.com         & E       & 83.71   & 0.69  & 348         & 29.56   & 1.27  & 251         & 43.36   & 1.01  & 177         & 156.63    \\ 
-            Xapo.com            & W       & 26.96   & 0.22  & 94          & 70.75   & 3.03  & 64          & 5.79    & 0.14  & 33          & 103.50    \\ 
-            Poloniex.com        & E       & 42.65   & 0.35  & 381         & 11.52   & 0.49  & 268         & 19.97   & 0.47  & 139         & 74.15     \\ 
-            Luno.com            & W+E     & 36.59   & 0.30  & 258         & 4.06    & 0.17  & 104         & 4.39    & 0.10  & 60          & 45.04     \\ 
-            Bitstamp.net        & E       & 8.94    & 0.07  & 57          & 3.55    & 0.15  & 38          & 3.91    & 0.09  & 22          & 16.39     \\ 
-            Cryptonator.com     & W+E     & 5.75    & 0.05  & 80          & 0.70    & 0.03  & 41          & 2.70    & 0.06  & 33          & 9.15      \\ 
-            BitoEX.com          & W       & 5.09    & 0.04  & 23          & 1.12    & 0.05  & 35          & 2.19    & 0.05  & 4           & 8.39      \\ 
-            CoinHako.com        & W+E     & 3.59    & 0.03  & 4           & 0.29    & 0.01  & 3           & 0.24    & 0.01  & 2           & 4.12      \\ 
-            Bitcoin.de          & E       & 1.86    & 0.02  & 26          & 0.76    & 0.03  & 13          & 0.58    & 0.01  & 7           & 3.19      \\ \bottomrule
-            \end{tabular}
-        }
-    \end{table} 
+\begin{frame}[fragile]{Payout Patterns | Methodology}
+    \begin{algorithm}[H]
+        \caption{Find payout patterns in BTC.com, AntPool and ViaBTC.}\label{algo:blocks_addresses}
+        \begin{algorithmic}[1]
+            \For{each pool}
+                \For{each mined block}
+                    \State get coinbase flow of block
+                    \State compute number of addresses at each step of the coinbase flow
+                    \State save results
+                \EndFor
+                \State plot data and look for common patterns among flows
+            \EndFor
+        \end{algorithmic}
+    \end{algorithm}
 \end{frame}
 
-\section{Future work} 
-\begin{frame}[fragile]{Future work}
-    \begin{itemize}
-        \item Further research about unknown entities (entity classification)
-        \item Improve heuristics to get more payout patterns
-        \item Extend analysis to other pools
-        \item IP-network traffic measurement
-    \end{itemize}
-\end{frame}
-
-\section{Conclusion} 
-\begin{frame}[fragile]{Conclusion}
-    \begin{itemize}
-        \item 3 pools can easily reach 50 of the hash rate
-        \item It is possible to find pool members because pools follow payout patterns
-        \item High hash-rate concentration within major pools
-        \item Cross-pool mining occurs
-        \item Unknown mining prevails
-    \end{itemize}
-\end{frame}
-
-
-\begin{frame}[allowframebreaks]{References}
-  \bibliography{demo}
-  \bibliographystyle{abbrv}
-\end{frame}
-
-\section{Appendix}
-\begin{frame}[fragile]{Appendix}
-    \begin{figure}
-        \centering
-        \includegraphics[width=.6\textwidth]{images/mining_distribution_157.pdf}
-        \caption{Concentration indeces and mining shares.} \label{fig:mining_distribution}
-    \end{figure}
-\end{frame}
-
-\begin{frame}[fragile]{Appendix}
+\begin{frame}[fragile]{Payout Patterns | Methodology}
     \begin{figure}
         \includegraphics[width=\textwidth]{images/payout_trend_BTC_com.pdf}
         \caption{Payout trend for BTC.com} \label{fig:payout_trend_BTCcom}
