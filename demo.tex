@@ -69,9 +69,9 @@ Bernhard Haslhofer \inst{1}}
     \begin{itemize}
         \item Solo mining is not profitable anymore \pause
         \item Miners join pools for steadier revenues \pause
-        \item Miners can join multiple pools (Cross-Pool Mining) \pause
         \item Pools compete to create blocks and claim the rewards \pause
-        \item Pool managers coordinate work and rewards among members
+        \item Pool managers coordinate work and rewards among members \pause
+        \item Miners can join multiple pools (Cross-Pool Mining)
     \end{itemize}
 \end{frame}
 
@@ -175,10 +175,10 @@ Bernhard Haslhofer \inst{1}}
             Bixin         & TangPool        & 142                 \\
             BTC.com       & Waterhole       & 113                 \\
             BTC.TOP       & WAYI.CN         & 81                  \\
-            ViaBTC        & Okminer         & 5                   \\
-            Yourbtc       & OzCoin          & 3                   \\
-            BitcoinRussia & Bitcoin-Ukraine & 1                   \\
-            F2Pool        & BTCC Pool       & 1                   \\
+            % ViaBTC        & Okminer         & 5                   \\
+            % Yourbtc       & OzCoin          & 3                   \\
+            % BitcoinRussia & Bitcoin-Ukraine & 1                   \\
+            % F2Pool        & BTCC Pool       & 1                   \\
             \bottomrule
             \end{tabular}
         }
@@ -202,7 +202,7 @@ Bernhard Haslhofer \inst{1}}
                 \includegraphics[width=1.23\textwidth]{images/stackplot_periodLen_2016secs_end_554399_numPeriods_138_threshold_4_groupBy_miner.pdf}
                 };
             \begin{scope}[x={(image.south east)},y={(image.north west)}]
-             \node[font=\large,inner sep=4pt,align=center] (Bitmain2) at (0.9,0.2) 
+             \node[font=\large,inner sep=4pt,align=center] (Bitmain2) at (0.9,0.21) 
                 {Bitmain};
              \draw[ultra thick,red,-stealth] (Bitmain2) -- (0.7,0.18);
              \draw[ultra thick,red,-stealth] (Bitmain2) -- (0.7,0.3);
@@ -244,6 +244,8 @@ Bernhard Haslhofer \inst{1}}
         \begin{figure}
             \includegraphics[width=.35\textwidth]{images/selected_pools.png}
         \end{figure} 
+        \pause
+        \item From block 510,000 to 514,032
 
     \end{itemize}
 \end{frame}
@@ -300,6 +302,7 @@ Bernhard Haslhofer \inst{1}}
         \begin{figure}
             \includegraphics[width=.15\textwidth]{images/pool_members.png}
         \end{figure}
+        \pause
         \item GraphSense (Clustering and Tags)
         \begin{figure}
             \includegraphics[width=.5\textwidth]{images/graphsense_graph.png}
@@ -354,24 +357,22 @@ Bernhard Haslhofer \inst{1}}
 \section{Conclusion} 
 \begin{frame}[fragile]{Conclusion}
     \begin{enumerate}
-        \item Mining centralization has followed a cyclical pattern so far
-        \item Three to four mining pools control 51\% of mining
-        \item Bitmain and China play a key role in the mining industry 
-        \item Major pools follow specific patterns to distribute mining rewards
-        \item Major pools show centralization tendencies (50\% of the identified BTC goes to 18 or less members)
-        \item Miners are active across multiple pools
-        \item Miners use exchanges and wallet services to collect payouts
+        \item Mining centralization has followed a cyclical pattern so far \pause
+        \item Three to four mining pools control 51\% of mining \pause
+        \item Bitmain and China play a key role in the mining industry \pause
+        \item Major pools follow specific patterns to distribute mining rewards \pause
+        \item Major pools show centralization tendencies (50\% of the identified BTC goes to 18 or less members) \pause
+        \item Miners are active across multiple pools \pause
+        \item Miners use exchanges and wallet services to receive payouts
     \end{enumerate}
 \end{frame}
 
 \section{Future work} 
 \begin{frame}[fragile]{Future work}
     \begin{itemize}
-        \item Classification/characterization of entities 
-        \item Collaborative tag sharing
-        \item Improve heuristics to find more payout transactions
-        \item Extend analysis to other pools
-        \item IP-network traffic measurement
+        \item Classification of entities and collaborative tag sharing 
+        \item Improve heuristics to find more payments and extend work to other pools 
+        \item IP-network traffic measurements
     \end{itemize}
 \end{frame}
  
@@ -380,7 +381,7 @@ Bernhard Haslhofer \inst{1}}
         \item \textbf{Slides}:\\ \url{https://github.com/MatteoRomiti/WEIS_Deep_Dive_slides} 
         \item \textbf{Graphsense}:\\ \url{https://graphsense.info/} 
         \item \textbf{Code}:\\ \url{https://github.com/MatteoRomiti/Deep_Dive_BTC_Mining_Pools} 
-        \item \textbf{Data}:\\ \url{https://zenodo.org/}
+        % \item \textbf{Data}:\\ \url{https://zenodo.org/}
     \end{itemize}
 \end{frame}
 
